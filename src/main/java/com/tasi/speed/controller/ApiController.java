@@ -396,8 +396,8 @@ public class ApiController extends PublicTools {
         parameters.put("nonce_str", WxUtils.gen32RandomString()); // 32 位随机字符串
         parameters.put("notify_url", notifyUrl);
         parameters.put("out_trade_no", orderId);
-        //parameters.put("total_fee", price.multiply(BigDecimal.valueOf(100)).intValue());
-        parameters.put("total_fee", 1); // 测试时，将支付金额设置为 1 分钱
+        parameters.put("total_fee", price.intValue());
+        //parameters.put("total_fee", 1); // 测试时，将支付金额设置为 1 分钱
         parameters.put("spbill_create_ip", ipAddress);
         parameters.put("trade_type", "JSAPI");
         parameters.put("openid", openid);

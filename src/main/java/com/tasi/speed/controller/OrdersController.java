@@ -2,14 +2,17 @@ package com.tasi.speed.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.tasi.speed.common.CommonFunction;
 import com.tasi.speed.common.query.PageUtils;
 import com.tasi.speed.common.query.Query;
 import com.tasi.speed.common.query.R;
 import com.tasi.speed.controller.common.PublicTools;
 import com.tasi.speed.model.Appointment;
 import com.tasi.speed.model.Orders;
+import com.tasi.speed.model.User;
 import com.tasi.speed.service.AppointmentServer;
 import com.tasi.speed.service.OrdersServer;
+import com.tasi.speed.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -35,6 +39,8 @@ public class OrdersController extends PublicTools {
     private OrdersServer ordersServer;
     @Autowired
     private AppointmentServer appointmentServer;
+    @Autowired
+    private UserService userService;
 
     /**
      * 订单列表
@@ -44,6 +50,13 @@ public class OrdersController extends PublicTools {
      */
     @GetMapping("/list")
     public R ordersList(@RequestParam Map<String, Object> params) {
+        Object userName = params.get("userName");
+        if (!CommonFunction.isnull(userName)) {
+            List<User> userList = userService.list(new QueryWrapper<User>().like("nick_name", userName));
+            if (userList.size() > 0) {
+                params.put("userId", userList.get(0).getId());
+            }
+        }
         PageUtils page = ordersServer.queryPage(params);
         return R.ok().put("page", page);
     }

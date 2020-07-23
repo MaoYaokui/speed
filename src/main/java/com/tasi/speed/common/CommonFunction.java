@@ -105,6 +105,7 @@ public class CommonFunction {
 
     /**
      * 时间转换 将 HH:mm:ss.SS 格式 转换为秒
+     *
      * @param Time
      * @return
      * @throws ParseException

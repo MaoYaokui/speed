@@ -25,10 +25,15 @@ import java.util.Map;
 public class OrdersServer extends ServiceImpl<OrdersMapper, Orders> {
 
     public PageUtils queryPage(Map<String, Object> params) {
+        Object userId = params.get("userId");
+        Object productName = params.get("productName");
+        Object itemName = params.get("itemName");
         IPage<Orders> page = this.page(
                 new Query<Orders>().getPage(params),
                 new QueryWrapper<Orders>()
-
+                        .eq(!CommonFunction.isnull(userId), "user_id", userId)
+                        .like(!CommonFunction.isnull(productName), "product_name", productName)
+                        .like(!CommonFunction.isnull(itemName), "item_name", itemName)
         );
         return new PageUtils(page);
     }

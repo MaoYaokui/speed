@@ -3,6 +3,7 @@ package com.tasi.speed.service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.tasi.speed.common.CommonFunction;
 import com.tasi.speed.common.query.PageUtils;
 import com.tasi.speed.common.query.Query;
 import com.tasi.speed.mapper.AppointmentMapper;
@@ -24,9 +25,13 @@ import java.util.Map;
 public class AppointmentServer extends ServiceImpl<AppointmentMapper, Appointment> {
 
     public PageUtils queryPage(Map<String, Object> params) {
+        Object product = params.get("product");
+        Object phone = params.get("phone");
         IPage<Appointment> page = this.page(
                 new Query<Appointment>().getPage(params),
                 new QueryWrapper<Appointment>()
+                        .like(!CommonFunction.isnull(product), "product", product)
+                        .like(!CommonFunction.isnull(phone), "phone", phone)
         );
         return new PageUtils(page);
     }
